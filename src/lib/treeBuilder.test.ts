@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildTree, classifyFile, collectFileNodes, type FileWithPath } from './treeBuilder'
+import { buildTree, classifyFile, collectFileNodes, filesFromFileList, type FileWithPath } from './treeBuilder'
 
 const fakeFile = (name: string): File => new File(['x'], name)
 
@@ -15,6 +15,41 @@ describe('classifyFile', () => {
     expect(classifyFile('pdf')).toBe('unsupported')
     expect(classifyFile('png')).toBe('unsupported')
     expect(classifyFile('README')).toBe('unsupported')
+  })
+
+  it('uses only the last extension and ignores a leading dot', () => {
+    expect(classifyFile('archive.tar.PDF')).toBe('pdf')
+    expect(classifyFile('photo.png.txt')).toBe('unsupported')
+    expect(classifyFile('.pdf')).toBe('unsupported')
+  })
+})
+
+describe('filesFromFileList', () => {
+  const picked = (name: string, relativePath?: string): File => {
+    const file = fakeFile(name)
+    // Browsers set this on folder picks; Node's File has no such field.
+    if (relativePath) Object.defineProperty(file, 'webkitRelativePath', { value: relativePath })
+    return file
+  }
+  const asFileList = (files: File[]): FileList => files as unknown as FileList
+
+  it('uses the folder-relative path when the browser provides one', () => {
+    const out = filesFromFileList(asFileList([picked('a.pdf', 'scans/2026/a.pdf'), picked('b.png')]))
+    expect(out.map((f) => f.path)).toEqual(['scans/2026/a.pdf', 'b.png'])
+  })
+
+  it('drops OS junk, dotfiles and anything inside a hidden folder', () => {
+    const out = filesFromFileList(
+      asFileList([
+        picked('keep.pdf', 'docs/keep.pdf'),
+        picked('.DS_Store', 'docs/.DS_Store'),
+        picked('Thumbs.db', 'docs/Thumbs.db'),
+        picked('desktop.ini', 'docs/desktop.ini'),
+        picked('.env', 'docs/.env'),
+        picked('config', 'docs/.git/config'),
+      ]),
+    )
+    expect(out.map((f) => f.path)).toEqual(['docs/keep.pdf'])
   })
 })
 
