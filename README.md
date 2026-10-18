@@ -5,12 +5,20 @@ Convert **PDFs and images into well-structured JSON** — entirely in your brows
 ## Architecture / How it Works
 
 ```mermaid
-flowchart LR
-    A[User] --> B[JSON CONVERTER]
-    B --> C{Logic}
-    C --> D[(Data)]
-    C --> E[Output]
-    D --> C
+flowchart TD
+  App --> DropZone
+  App --> FileTree
+  App --> Inspector
+  App --> TreeBuilder
+  App --> ConvertController
+  App --> Exporter
+  ConvertController --> PdfConverter
+  ConvertController --> ImageConverter
+  ConvertController --> ResultBuilder
+  PdfConverter --> OCR
+  ImageConverter --> OCR
+  PdfConverter --> Structurer
+  ImageConverter --> Structurer
 ```
 
 
