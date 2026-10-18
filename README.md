@@ -2,6 +2,18 @@
 
 Convert **PDFs and images into well-structured JSON** — entirely in your browser. Drop a single file or a whole folder: folders become a file tree and every convertible file inside is converted in place.
 
+## Architecture / How it Works
+
+```mermaid
+flowchart LR
+    A[User] --> B[JSON CONVERTER]
+    B --> C{Logic}
+    C --> D[(Data)]
+    C --> E[Output]
+    D --> C
+```
+
+
 **Live app:** https://alphaman-0.github.io/JSON_CONVERTER/
 
 ## Features
