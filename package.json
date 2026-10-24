@@ -11,9 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "node-fetch": "^3.3.2",
-    "pdfjs-dist": "^5.3.31",
+    "pdfjs-dist": "~5.5.207",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tesseract.js": "^6.0.1"
@@ -24,6 +22,6 @@
     "@vitejs/plugin-react": "^4.6.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.11"
   }
 }
