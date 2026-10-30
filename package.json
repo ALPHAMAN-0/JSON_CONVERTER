@@ -11,6 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "node-fetch": "^3.3.2",
     "pdfjs-dist": "~5.5.207",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
